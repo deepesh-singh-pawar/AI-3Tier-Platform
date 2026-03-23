@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+
+  db:
+    image: postgres:15
+    container_name: ai_postgres
+    environment:
+      POSTGRES_DB: chatdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+
+  ollama:
+    image: ollama/ollama
+    container_name: ai_ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+
+
+  backend:
+    build:
+      context: ./backend
+    container_name: ai_backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - ollama
+
+
+volumes:
+  postgres_data:
+  ollama_data:
