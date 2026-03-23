@@ -35,16 +35,103 @@ def home():
     chats = db.query(Chat).all()
 
     html = """
-    <h2>Ask Ollama</h2>
+    <!DOCTYPE html>
+<html>
+<head>
+<title>AI Microservice Chat Platform</title>
 
-    <form method="post" action="/ask">
-        <input name="prompt"/>
-        <button type="submit">Send</button>
-    </form>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    margin: 0;
+    padding: 0;
+}
 
-    <hr>
+.container {
+    width: 60%;
+    margin: auto;
+    margin-top: 60px;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
+}
 
-    <h3>History</h3>
+h2 {
+    text-align: center;
+    color: #333;
+}
+
+form {
+    display: flex;
+    gap: 10px;
+}
+
+input {
+    flex: 1;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+.history {
+    margin-top: 30px;
+}
+
+.chat-box {
+    background: #f1f3f5;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>🤖 Ask Ollama AI Assistant</h2>
+
+<form method="post" action="/ask">
+    <input name="prompt" placeholder="Type your question here..." required />
+    <button type="submit">Send 🚀</button>
+</form>
+
+<div class="history">
+
+<h3>📜 Chat History</h3>
+
+{% for chat in chats %}
+<div class="chat-box">
+<b>👤 You:</b> {{ chat.question }} <br><br>
+<b>🤖 AI:</b> {{ chat.answer }}
+</div>
+{% endfor %}
+
+</div>
+
+</div>
+
+</body>
+</html>
     """
 
     for chat in chats:
